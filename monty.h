@@ -11,17 +11,7 @@
 #define STACK 0
 #define QUEUE 1
 
-/**
- * struct meta_s - structure containing the error status and state of the stack
- * @error: the error value (0 if no, 1 if yes)
- * @state: QUEUE or STACK
- */
-
-typedef struct meta_s
-{
-	int error;
-	int state;
-} meta_t;
+extern char **op_toks
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -31,7 +21,6 @@ typedef struct meta_s
  * Description: doubly linked list node structure
  * for stack, queues, LIFO, FIFO Holberton project
  */
-
 typedef struct stack_s
 {
 	int n;
@@ -46,45 +35,50 @@ typedef struct stack_s
  * Description: opcode and its function
  * for stack, queues, LIFO, FIFO Holberton project
  */
-
 typedef struct instruction_s
 {
 	char *opcode;
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-meta_t META;
+void free_stack(stack_t **stack);
+int init_stack(stack_t **stack);
+int check_mode(stack_t *stack);
+void free_tokens(void);
+unsigned int token_arr_len(void);
+int run_monty(FILE *script_fd);
+void set_op_tok_error(int error_code);
 
-/* EXEC */
-int monty_run(FILE *fp);
+void monty_push(stack_t **stack, unsigned int line_number);
+void monty_pall(stack_t **stack, unsigned int line_number);
+void monty_pint(stack_t **stack, unsigned int line_number);
+void monty_pop(stack_t **stack, unsigned int line_number);
+void monty_swap(stack_t **stack, unsigned int line_number);
+void monty_add(stack_t **stack, unsigned int line_number);
+void monty_nop(stack_t **stack, unsigned int line_number);
+void monty_sub(stack_t **stack, unsigned int line_number);
+void monty_div(stack_t **stack, unsigned int line_number);
+void monty_mul(stack_t **stack, unsigned int line_number);
+void monty_mod(stack_t **stack, unsigned int line_number);
+void monty_pchar(stack_t **stack, unsigned int line_number);
+void monty_pstr(stack_t **stack, unsigned int line_number);
+void monty_rotl(stack_t **stack, unsigned int line_number);
+void monty_rotr(stack_t **stack, unsigned int line_number);
+void monty_stack(stack_t **stack, unsigned int line_number);
+void monty_queue(stack_t **stack, unsigned int line_number);
 
-/* OPCODES */
-void _push(stack_t **stack, unsigned int line_nb, char *a_value);
-void _pall(stack_t **stack, unsigned int line_nb);
-void _pint(stack_t **stack, unsigned int line_nb);
-void _pop(stack_t **stack, unsigned int line_nb);
-void _swap(stack_t **stack, unsigned int line_nb);
-void _add(stack_t **stack, unsigned int line_nb);
-void _nop(stack_t **stack, unsigned int line_nb);
-void _sub(stack_t **stack, unsigned int line_nb);
-void _div(stack_t **stack, unsigned int line_nb);
-void _mul(stack_t **stack, unsigned int line_nb);
-void _mod(stack_t **stack, unsigned int line_nb);
-void _pchar(stack_t **stack, unsigned int line_nb);
-void _pstr(stack_t **stack, unsigned int line_nb);
-void _rotl(stack_t **stack, unsigned int line_nb);
-void _rotr(stack_t **stack, unsigned int line_nb);
+char **strtow(char *str, char *delims);
+char *get_int(int n);
+int usage_error(void);
 
-/* OP_PUSH */
-stack_t *add_dnodeint(stack_t **head, const int n);
-stack_t *add_dnodeint_end(stack_t **head, const int n);
+int malloc_error(void);
+int f_open_error(char *filename);
+int unknown_op_error(char *opcode, unsigned int line_number);
+int no_int_error(unsigned int line_number);
+int pop_error(unsigned int line_number);
+int pint_error(unsigned int line_number);
+int short_stack_error(unsigned int line_number, char *op);
+int div_error(unsigned int line_number);
+int pchar_error(unsigned int line_number, char *message);
 
-/* UTILS */
-int handle_input(int argc, char **argv, FILE **fd);
-char **handle_line(char *line);
-void _math(stack_t **stack, char op);
-
-/* DEBUG */
-void debug(char **args, int line_nb);
-
-#endif /* MONTY_H */
+#endif
